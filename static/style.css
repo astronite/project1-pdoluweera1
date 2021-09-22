@@ -1,0 +1,42 @@
+body{
+    text-align: center;
+}
+h1 {
+    font-size: 48px;
+    text-transform: uppercase
+    
+}
+
+ol {
+    font-size: 36px;
+    color: black
+  }
+  
+  .favorite {
+      color: blue
+  }
+  
+body {
+    margin: auto;
+    background-color: lightgoldenrodyellow;
+    font-family: Arial
+      
+}
+
+audio {
+    margin: 35px 5px 50px 1px;
+
+}
+img {
+    height: 350px;
+    width: 350px;
+    border-radius: 30px;
+}
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto }
+}
+a {
+    font-size: 28px;
+}
