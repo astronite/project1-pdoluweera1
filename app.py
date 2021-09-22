@@ -1,5 +1,6 @@
 #Praveen Doluweera 
 
+from tester import *
 import json
 import requests
 import os
@@ -14,12 +15,10 @@ app = flask.Flask(__name__)
 def index():
     load_dotenv(find_dotenv())
 
-    genius_client_access_token = os.getenv('genius_Token')
     client_id = os.getenv("client_id")
     client_secret = os.getenv("client_secret")
 
     url = "https://accounts.spotify.com/api/token"
-    genius_url = 'https://api.genius.com/'
 
     # POST
     auth_response = requests.post(url, {
@@ -51,13 +50,8 @@ def index():
     artist = (r['tracks'][song_Random]['album']['artists'][0]['name'])
     images_Link = (r['tracks'][song_Random]['album']['images'][0]['url'])
     preview_Link = (r['tracks'][song_Random]['preview_url'])
-
-    genius_search_url = f"http://api.genius.com/search?q={song}{artist}&access_token={genius_client_access_token}"
-
-    l = requests.get(genius_search_url)
-    l = l.json()
-
-    lyrics_url = (l["response"]["hits"][0]["result"]["url"])
+    
+    lyrics_url = genius(song,artist)
     
     return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link, url = lyrics_url)
 
