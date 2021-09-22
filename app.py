@@ -51,9 +51,9 @@ def index():
     images_Link = (r['tracks'][song_Random]['album']['images'][0]['url'])
     preview_Link = (r['tracks'][song_Random]['preview_url'])
     
-    lyrics_url = genius(song,artist)
+    lyrics_link = genius(song,artist)
     
-    return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link, url = lyrics_url)
+    return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link, url = lyrics_link)
 
 app.run(
     debug = True,
