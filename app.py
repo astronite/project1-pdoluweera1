@@ -39,25 +39,31 @@ def index():
     artist_Random = random.choice(artists_ID)
     song_Random = random.randint(0, 9)
 
-    genius_search_url = f"http://api.genius.com/search?q={song}{artist}&access_token={genius_client_access_token}"
+
     BASE_URL = 'https://api.spotify.com/v1/artists/%s/top-tracks?market=US' % (artist_Random)  #Every refresh chooses a new artist id
 
     r = requests.get(BASE_URL, headers=headers,
             params={'limit': 10})
     r = r.json()
 
-    l = requests.get(genius_search_url)
-    l = l.json()
    
     song = (r['tracks'][song_Random]['name']) #random song 
     artist = (r['tracks'][song_Random]['album']['artists'][0]['name'])
     images_Link = (r['tracks'][song_Random]['album']['images'][0]['url'])
     preview_Link = (r['tracks'][song_Random]['preview_url'])
-    lyrics_url = (l["response"]["hits"][0]["result"]["url"])
 
+    genius_search_url = f"http://api.genius.com/search?q={song}{artist}&access_token={genius_client_access_token}"
+
+    l = requests.get(genius_search_url)
+    l = l.json()
+
+    lyrics_url = (l["response"]["hits"][0]["result"]["url"])
+    
     return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link, url = lyrics_url)
 
 app.run(
+    debug = True,
     host = '0.0.0.0',
     port = int(os.getenv("PORT", 8080))
+
 )
