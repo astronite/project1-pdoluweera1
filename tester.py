@@ -15,5 +15,4 @@ def genius(song,artist):
 
     return lyrics_url
 
-print(genius("Rockstar", "Post Malone"))
 
