@@ -1,6 +1,5 @@
 #Praveen Doluweera 
 
-from tester import *
 import json
 import requests
 import os
@@ -51,9 +50,8 @@ def index():
     images_Link = (r['tracks'][song_Random]['album']['images'][0]['url'])
     preview_Link = (r['tracks'][song_Random]['preview_url'])
     
-    lyrics_link = genius(song,artist)
     
-    return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link, url = lyrics_link)
+    return flask.render_template("index.html", song = song, artist = artist, image= images_Link, preview = preview_Link)
 
 app.run(
     debug = True,
