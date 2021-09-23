@@ -16,7 +16,7 @@ To deploy the app, you need to create a [Heroku](https://signup.heroku.com/). Th
 ## Technical Problems encountered
 One problem that I encountered in the initial development was naming the ".env" file as "env". This caused my api keys to malfunction.
 
-A major issue I had with pushing my app to heroku was making sure my heroku config vars matched with what was in my ".env" file. In my case there was a mismatch in the name of the vars. The name on heroku config vars must match the ".env" file.
+A major issue I had with pushing my app to heroku was making sure my heroku config vars matched with what was in my ".env" file. In my case there was a mismatch in the name of the vars. The name on heroku config vars must match the ".env" file. This caused my genius calls specifically to malfunction on heroku despite working fine in my local testing environment.
 
 An important command when investigating deployment issues on heroku was 
 ```heroku logs --tail --app [app name]"``` This gave specific error messages which could be easily googled. 
