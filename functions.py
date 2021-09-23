@@ -1,8 +1,6 @@
-import json
 import requests
 import os
 import random
-import flask  
 from dotenv import find_dotenv, load_dotenv, main
 
 def genius(song,artist):
