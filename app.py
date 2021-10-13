@@ -5,14 +5,17 @@ from functions import *
 import os
 import flask  
 from dotenv import find_dotenv, load_dotenv, main
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import find_dotenv, load_dotenv, main
+
 
 app = flask.Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://kuzgfouwsjmldd:67464b0aa5c549c457e27fa4d938c9e5066373fdd48ed68516f0726887ca2697@ec2-3-215-83-124.compute-1.amazonaws.com:5432/dedpghnpirtebi"
+load_dotenv(find_dotenv())
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('psql')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['SECRET_KEY'] = '0045b9de9d4fe8cb33009403fc47d3077e681c64ebc4e83f32c763adbc420d47'
+app.config['SECRET_KEY'] = os.getenv('secret')
 
 
 db = SQLAlchemy(app)
@@ -25,10 +28,10 @@ class Username(UserMixin, db.Model):
     def __repr__(self):
         return f"<Username {self.name}"
 
-class Arist(db.Model):
+class Singer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.String(120), nullable=False, unique = True)
-    aristName = db.Column(db.String(120), nullable=False, unique = True)
+    userID = db.Column(db.String(120), nullable=False)
+    artistName = db.Column(db.String(120), nullable=False)
 
 db.create_all()
 
@@ -54,9 +57,14 @@ def login():
 
     return flask.render_template("login.html")
 
-@app.route('/index')
+@app.route('/index', methods = ['GET','POST'])
 @login_required
 def index():
+    if flask.request.method == 'POST':
+        data = flask.request.form.get("username")
+        user = Singer(userID = current_user.name, artistName = data)
+        db.session.add(user)
+        db.session.commit()
     a= songData()
     return flask.render_template("index.html", song = a[0], artist = a[1], image= a[2], preview = a[3], url = a[4])
 
@@ -70,6 +78,12 @@ def signup():
         return flask.redirect("/")
 
     return flask.render_template("signup.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return flask.redirect(("/"))
 
 app.run(
     debug = True,

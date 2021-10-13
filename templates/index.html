@@ -6,15 +6,24 @@
 </head>
 
 <body>
-    <h1> {{song}} </h1>
-    <h2> by: {{artist}} </h2>
-    <img src={{image}}>
-    <br>
-    <audio controls>
-        <source src={{preview}} />
-    </audio>
-    <br>
-    <a href={{url}}>Click here for lyrics!</a>
+    <form class="form-inline" action="" method="POST">
+        <label>Enter in your Favorite Artist!</label>
+
+        <input type="text" id="username" placeholder="Aritst Name" name="username">
+        <button type="submit">Submit</button>
+        <h1> {{song}} </h1>
+        <h2> by: {{artist}} </h2>
+        <img src={{image}}>
+        <br>
+        <audio controls>
+            <source src={{preview}} />
+        </audio>
+        <br>
+        <a href={{url}}>Click here for lyrics!</a>
+
+        <a href="/logout" class="navbar-item">
+            Logout
+        </a>
 
 </body>
 
