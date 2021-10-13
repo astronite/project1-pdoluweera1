@@ -1,5 +1,7 @@
 #Praveen Doluweera 
+#First commit for project milestone2
 
+#RANDOM WRITINGS 
 from functions import *
 import os
 import flask  
