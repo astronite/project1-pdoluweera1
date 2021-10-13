@@ -10,6 +10,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 
 app = flask.Flask(__name__)
 
+
 @app.route('/', methods = ['GET','POST'])
 
 def login():
