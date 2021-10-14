@@ -13,7 +13,11 @@ from dotenv import find_dotenv, load_dotenv, main
 app = flask.Flask(__name__)
 
 load_dotenv(find_dotenv())
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('psql')
+url = os.getenv("DATABASE_URL")
+if url and url.startswith("postgres://"):
+    url = url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = os.getenv('secret')
 
