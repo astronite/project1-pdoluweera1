@@ -11,6 +11,10 @@
 
         <input type="text" id="username" placeholder="Aritst Name" name="username">
         <button type="submit">Submit</button>
+        <div>Welcome {{ name }} </div>
+        {% if newUser %}
+        <div>You don't have any artists saved, please enter your favorite artists</div>
+        {% else %}
         <h1> {{song}} </h1>
         <h2> by: {{artist}} </h2>
         <img src={{image}}>
@@ -24,6 +28,7 @@
         <a href="/logout" class="navbar-item">
             Logout
         </a>
+        {%endif%}
 
 </body>
 

@@ -13,7 +13,7 @@ def genius(song,artist):
 
     return lyrics_url
 
-def spotify():
+def spotify(artist_list):
     load_dotenv(find_dotenv())
 
     client_id = os.getenv("client_id")
@@ -35,7 +35,9 @@ def spotify():
         'Authorization': 'Bearer {token}'.format(token=access_token,) 
     }
 
-    artist_Random = getArtist()
+
+
+    artist_Random = getArtist(artist_list)
 
     BASE_URL = 'https://api.spotify.com/v1/artists/%s/top-tracks?market=US' % (artist_Random)  #Every refresh chooses a new artist id
 
@@ -45,13 +47,13 @@ def spotify():
 
     return(r)
 
-def getArtist():
-    artists_ID = ["4LLpKhyESsyAXpc4laK94U", "1ShZZUjkbXCjhwrb18BA8I", "4kI8Ie27vjvonwaB2ePh8T"] #Mac Miller, Bryce Vine, portugal. the man 
+def getArtist(artists_ID):
+    ##artists_ID = ["4LLpKhyESsyAXpc4laK94U", "1ShZZUjkbXCjhwrb18BA8I", "4kI8Ie27vjvonwaB2ePh8T"] #Mac Miller, Bryce Vine, portugal. the man 
     artist_Random = random.choice(artists_ID)
     return(artist_Random)
 
-def songData():
-    r= spotify()
+def songData(artist_list):
+    r= spotify(artist_list)
     song_Random = random.randint(0, 9)
     song = (r['tracks'][song_Random]['name']) #random song 
     artist = (r['tracks'][song_Random]['album']['artists'][0]['name'])
@@ -60,6 +62,44 @@ def songData():
     lyric_link = genius(song,artist)
     data = [song,artist,images_Link,preview_Link,lyric_link]
     return(data)    
+
+def getArtistID(name):
+    load_dotenv(find_dotenv())
+
+    client_id = os.getenv("client_id")
+    client_secret = os.getenv("client_secret")
+
+    url = "https://accounts.spotify.com/api/token"
+
+    # POST
+    auth_response = requests.post(url, {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret,
+    })
+
+    auth_response_data = auth_response.json()
+    access_token = auth_response_data['access_token']
+
+    headers = {
+        'Authorization': 'Bearer {token}'.format(token=access_token,) 
+    }
+
+    SEARCH_URL = "https://api.spotify.com/v1/search"
+
+    r = requests.get(SEARCH_URL, headers=headers,
+         params={"q": name, "type" : "artist" })
+    r = r.json()
+
+    artistID = r['artists']['items'][0]['id']
+    artistName = r['artists']['items'][0]['name']
+
+    data = [artistID,artistName]
+
+    return(data)
+
+
+
 
 
     

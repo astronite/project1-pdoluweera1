@@ -30,7 +30,7 @@ class Username(UserMixin, db.Model):
 
 class Singer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.String(120), nullable=False)
+    userID = db.Column(db.Integer, nullable=False)
     artistName = db.Column(db.String(120), nullable=False)
 
 db.create_all()
@@ -62,21 +62,38 @@ def login():
 def index():
     if flask.request.method == 'POST':
         data = flask.request.form.get("username")
-        user = Singer(userID = current_user.name, artistName = data)
+        user = Singer(userID = current_user.id, artistName = data)
         db.session.add(user)
         db.session.commit()
-    a= songData()
-    return flask.render_template("index.html", song = a[0], artist = a[1], image= a[2], preview = a[3], url = a[4])
+
+    username = current_user.id
+    data = Singer.query.filter(Singer.userID==username).all()
+    print(data)
+    if data:
+        artist_list = []
+        for artist in data:
+            data2  = getArtistID(artist.artistName)
+            artist_list.append(data2[0])
+    
+        a= songData(artist_list)
+        return flask.render_template("index.html", name = current_user.name, song = a[0], artist = a[1], image= a[2], preview = a[3], url = a[4])
+    return flask.render_template("index.html",name = current_user.name, newUser = True)
+
+
+
+
 
 @app.route('/signup', methods = ["GET", "POST"])
 def signup():
     if flask.request.method == 'POST':
         data = flask.request.form.get("username")
-        user = Username(name=data)
-        db.session.add(user)
-        db.session.commit()
-        return flask.redirect("/")
-
+        d = Username.query.filter_by(name=data).first()
+        print (d)
+        if d is None: 
+            user = Username(name=data)
+            db.session.add(user)
+            db.session.commit()
+            return flask.redirect("/")
     return flask.render_template("signup.html")
 
 @app.route("/logout")
